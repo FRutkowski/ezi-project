@@ -136,7 +136,7 @@ const suggestedProducts = [
           </div>
         </div>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <UButton label="Dodaj do koszyka" icon="i-heroicons-shopping-cart" color="black"/>
+          <UButton label="Dodaj do koszyka" icon="i-heroicons-shopping-cart" color="black"/>
         <!--  <p class="text-sm leading-6 text-gray-900" @click="isHidden = !isHidden">
             <button class="inline-flex items-center font-medium hover:underline">
               Dodaj do koszyka
