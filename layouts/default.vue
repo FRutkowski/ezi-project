@@ -34,7 +34,7 @@ const pageTransition = computed(() => {
       <NuxtLoadingIndicator color="rgb(var(--color-primary-500))" />
       <main>
         <div class="pl-72 h-20 flex items-center sticky top-0 z-[10] bg-black text-white font-bold">
-          Aplikacja do sugerowania produktów
+          Sklep internetowy
         </div>
         <div class="h-screen max-w-screen grid grid-rows-[1fr,auto] text-gray-800 dark:text-gray-200">
           <div class="grid grid-cols-[auto,1fr] h-full bg-white dark:bg-gray-900">
@@ -50,7 +50,7 @@ const pageTransition = computed(() => {
 
               <div class="h-full">
 
-                <div class="fixed left-64 top-20 h-full w-full bg-gray-100 dark:bg-gray-800 rounded-tl-2xl shadow-inner border" >
+                <div class="fixed left-64 top-20 h-full w-full bg-gray-100 dark:bg-gray-400 rounded-tl-2xl shadow-inner border" >
                   <div class="max-h-[calc(100vh-5rem)] max-w-[calc(100vw-16rem)] h-full p-8 overflow-auto relative z-[1]"> 
                     <NuxtPage />
                   </div>
