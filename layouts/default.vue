@@ -50,7 +50,7 @@ const pageTransition = computed(() => {
 
               <div class="h-full">
 
-                <div class="fixed left-64 top-20 h-full w-full bg-gray-100 dark:bg-gray-400 rounded-tl-2xl shadow-inner border" >
+                <div class="fixed left-64 top-20 h-full w-full bg-gray-100 dark:bg-gray-800 rounded-tl-2xl shadow-inner border" >
                   <div class="max-h-[calc(100vh-5rem)] max-w-[calc(100vw-16rem)] h-full p-8 overflow-auto relative z-[1]"> 
                     <NuxtPage />
                   </div>
