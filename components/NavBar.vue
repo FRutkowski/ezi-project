@@ -23,7 +23,8 @@ const links = [
 </script>
 
 <template>
-  <div>
+  <div class="pt-16">
+    <UDivider class="pb-4"/>
     <UVerticalNavigation :links="links" />
   </div>
 </template>
