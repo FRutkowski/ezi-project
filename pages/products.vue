@@ -131,6 +131,11 @@ function suggestProduct(productId) {
   suggestedProduct[0] = products[idx.value]
 }
 
+function continueShopping(productId) {
+  isAddingProduct.value = false
+  isSuggestingProduct.value = false
+}
+
 </script>
 
 <template>
@@ -206,7 +211,7 @@ function suggestProduct(productId) {
 
         <UDivider/>
         <div class="pt-4 w-full flex justify-around">
-          <UButton color="gray" label="Kontynuuj zakupy" icon="i-heroicons-banknotes" @click="isAddingProduct=false"/>
+          <UButton color="gray" label="Kontynuuj zakupy" icon="i-heroicons-banknotes" @click="continueShopping"/>
           <UButton label="Przejdź do koszyka" icon="i-heroicons-shopping-cart" />
         </div>
       </Placeholder>
