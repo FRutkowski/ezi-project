@@ -61,16 +61,16 @@ function addProduct (productId) {
   isAddingProduct.value = true
   addedProductId.value = productId
 
-  idx.value = Math.floor(Math.random() * products.length)
-  suggestedProduct[0] = products[idx.value]
+  idx.value = Math.floor(Math.random() * products.value.length)
+  suggestedProduct[0] = products.value[idx.value]
 }
 
 function suggestProduct (productId) {
   isAddingProduct.value = false
   isSuggestingProduct.value = true
 
-  idx.value = Math.floor(Math.random() * products.length)
-  suggestedProduct[0] = products[idx.value]
+  idx.value = Math.floor(Math.random() * products.value.length)
+  suggestedProduct[0] = products.value[idx.value]
 }
 
 function continueShopping (productId) {
