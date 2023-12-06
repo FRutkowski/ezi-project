@@ -1,30 +1,30 @@
 <script setup lang="ts">
 import { useColorMode } from '@vueuse/core'
 
-const manageNavigation = [
-  {
-    label: 'Home',
-    icon: 'i-heroicons-home',
-    to: '/'
-  }
-]
+// const manageNavigation = [
+//   {
+//     label: 'Home',
+//     icon: 'i-heroicons-home',
+//     to: '/'
+//   }
+// ]
 
-const user = {
-  avatar: 'https://avatars.githubusercontent.com/u/739984?v=4',
-  name: 'Jan Kowalski',
-  email: 'jan@kowal.ski'
-}
+// const user = {
+//   avatar: 'https://avatars.githubusercontent.com/u/739984?v=4',
+//   name: 'Jan Kowalski',
+//   email: 'jan@kowal.ski'
+// }
 
-const router = useRouter()
-const colorMode = useColorMode()
+// const router = useRouter()
+// const colorMode = useColorMode()
 
-const route = useRoute()
-const pageTransition = computed(() => {
-  const transition = route.meta.pageTransition
-  return typeof transition === 'object'
-    ? transition.name + '-small'
-    : ''
-})
+// const route = useRoute()
+// const pageTransition = computed(() => {
+//   const transition = route.meta.pageTransition
+//   return typeof transition === 'object'
+//     ? transition.name + '-small'
+//     : ''
+// })
 </script>
 
 <template>
@@ -34,9 +34,11 @@ const pageTransition = computed(() => {
       <NuxtLoadingIndicator color="rgb(var(--color-primary-500))" />
       <main>
         <div class="sticky top-0 z-[10] bg-[url('/restaurant.jpg')] bg-cover bg-center text-white font-bold">
-          <div class="pl-72 h-28 flex items-center bg-black/50"> 
+          <div class="pl-72 h-28 flex items-center bg-black/50">
             <!-- <img class="w-96" v-bind:src="'/nazwa.png'"/> -->
-            <p class="text-4xl">Sklep internetowy</p>
+            <p class="text-4xl">
+              Sklep internetowy
+            </p>
           </div>
           <!-- <img class="pl-72 h-28 flex items-center bg-black/50" src="/nazwa.jpg"/> -->
         </div>
@@ -53,8 +55,8 @@ const pageTransition = computed(() => {
               </div>
 
               <div class="h-full">
-                <div class="fixed left-64 top-28 h-full w-full bg-gray-100 dark:bg-gray-800  shadow-inner" >
-                  <div class="max-h-[calc(100vh-5rem)] max-w-[calc(100vw-16rem)] h-full p-8 overflow-auto relative z-[1]"> 
+                <div class="fixed left-64 top-28 h-full w-full bg-gray-100 dark:bg-gray-800  shadow-inner">
+                  <div class="max-h-[calc(100vh-5rem)] max-w-[calc(100vw-16rem)] h-full p-8 overflow-auto relative z-[1]">
                     <NuxtPage />
                   </div>
                 </div>
