@@ -81,7 +81,7 @@ function continueShopping (productId) {
 </script>
 
 <template>
-  <div>
+  <div class="pb-20">
     <UModal
       v-model="isImageShown"
       prevent-close
@@ -239,6 +239,9 @@ function continueShopping (productId) {
       </div>
     </UModal>
 
+    <div class="text-3xl font-bold py-10">
+      Produkty
+    </div>
     <UCard :ui="{ body: { padding: '' }}">
       <UTable
         v-model:sort="sort"
