@@ -16,7 +16,8 @@ import { useColorMode } from '@vueuse/core'
 // }
 
 // const router = useRouter()
-// const colorMode = useColorMode()
+const colorMode = useColorMode()
+colorMode.value = 'light'
 
 // const route = useRoute()
 // const pageTransition = computed(() => {
