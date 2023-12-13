@@ -48,7 +48,7 @@ const items = (row) => [
   }]
 ]
 
-function showPhoto (imgUrl) {
+function showPhoto(imgUrl) {
   isImageShown.value = true
   imageToShow.value = imgUrl
 }
@@ -56,7 +56,7 @@ function showPhoto (imgUrl) {
 const suggestedProduct = []
 const idx = ref()
 
-function addProduct (productId) {
+function addProduct(productId) {
   isSuggestingProduct.value = false
   isAddingProduct.value = true
   addedProductId.value = productId
@@ -65,7 +65,7 @@ function addProduct (productId) {
   suggestedProduct[0] = products.value[idx.value]
 }
 
-function suggestProduct (productId) {
+function suggestProduct(productId) {
   isAddingProduct.value = false
   isSuggestingProduct.value = true
 
@@ -73,7 +73,7 @@ function suggestProduct (productId) {
   suggestedProduct[0] = products.value[idx.value]
 }
 
-function continueShopping (productId) {
+function continueShopping(productId) {
   isAddingProduct.value = false
   isSuggestingProduct.value = false
 }
@@ -82,39 +82,23 @@ function continueShopping (productId) {
 
 <template>
   <div class="pb-20">
-    <UModal
-      v-model="isImageShown"
-      prevent-close
-    >
+    <UModal v-model="isImageShown" prevent-close>
       <div class="flex justify-end w-full absolute p-2">
-        <UButton
-          color="black"
-          variant="solid"
-          icon="i-heroicons-x-mark-20-solid"
-          class="-my-1"
-          @click="isImageShown = false"
-        />
+        <UButton color="black" variant="solid" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+          @click="isImageShown = false" />
       </div>
       <img :src="imageToShow">
     </UModal>
 
-    <UModal
-      v-model="isAddingProduct"
-      prevent-close
-    >
+    <UModal v-model="isAddingProduct" prevent-close>
       <div class="p-4">
         <Placeholder class="h-48">
           <div class="flex justify-between w-full py-4">
             <div class="flex w-full">
               Produkt został dodany do koszyka!
             </div>
-            <UButton
-              color="black"
-              variant="ghost"
-              icon="i-heroicons-x-mark-20-solid"
-              class="-my-1"
-              @click="isAddingProduct = false"
-            />
+            <UButton color="black" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+              @click="isAddingProduct = false" />
           </div>
           <p class="py-4 text-sm">
             Inne produkty sugerowane na podstawie Twojego wyboru:
@@ -126,67 +110,37 @@ function continueShopping (productId) {
             idx: {{ idx }}
           </div>
 
-          <UTable
-            v-model:columns="columns"
-            :rows="suggestedProduct"
-          >
+          <UTable v-model:columns="columns" :rows="suggestedProduct">
             <template #image-data="{ row }">
-              <UButton
-                label="Open"
-                variant="link"
-                @click="showPhoto(row.photo)"
-              >
-                <UAvatar
-                  v-model:src="row.photo"
-                  size="sm"
-                />
+              <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
+                <UAvatar v-model:src="row.photo" size="sm" />
               </UButton>
-            </template>ł
+            </template>
             <template #actions-data="{ row }">
               <UDropdown :items="items(row)">
-                <UButton
-                  color="gray"
-                  variant="ghost"
-                  icon="i-heroicons-ellipsis-horizontal-20-solid"
-                />
+                <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
               </UDropdown>
             </template>
           </UTable>
 
           <UDivider />
           <div class="pt-4 w-full flex justify-around">
-            <UButton
-              color="gray"
-              label="Kontynuuj zakupy"
-              icon="i-heroicons-banknotes"
-              @click="isAddingProduct=false"
-            />
-            <UButton
-              label="Przejdź do koszyka"
-              icon="i-heroicons-shopping-cart"
-            />
+            <UButton color="gray" label="Kontynuuj zakupy" icon="i-heroicons-banknotes" @click="isAddingProduct = false" />
+            <UButton label="Przejdź do koszyka" icon="i-heroicons-shopping-cart" @click="$router.push('/shoppingCart')" />
           </div>
         </Placeholder>
       </div>
     </UModal>
 
-    <UModal
-      v-model="isSuggestingProduct"
-      prevent-close
-    >
+    <UModal v-model="isSuggestingProduct" prevent-close>
       <div class="p-4">
         <Placeholder class="h-48">
           <div class="flex justify-between w-full py-4">
             <p class="text-sm">
               Inne często występujące razem produkty:
             </p>
-            <UButton
-              color="black"
-              variant="ghost"
-              icon="i-heroicons-x-mark-20-solid"
-              class="-my-1"
-              @click="isSuggestingProduct = false"
-            />
+            <UButton color="black" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+              @click="isSuggestingProduct = false" />
           </div>
           <UDivider />
 
@@ -195,45 +149,23 @@ function continueShopping (productId) {
             idx: {{ idx }}
           </div>
 
-          <UTable
-            v-model:columns="columns"
-            :rows="suggestedProduct"
-          >
+          <UTable v-model:columns="columns" :rows="suggestedProduct">
             <template #image-data="{ row }">
-              <UButton
-                label="Open"
-                variant="link"
-                @click="showPhoto(row.photo)"
-              >
-                <UAvatar
-                  v-model:src="row.photo"
-                  size="sm"
-                />
+              <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
+                <UAvatar v-model:src="row.photo" size="sm" />
               </UButton>
             </template>ł
             <template #actions-data="{ row }">
               <UDropdown :items="items(row)">
-                <UButton
-                  color="gray"
-                  variant="ghost"
-                  icon="i-heroicons-ellipsis-horizontal-20-solid"
-                />
+                <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
               </UDropdown>
             </template>
           </UTable>
 
           <UDivider />
           <div class="pt-4 w-full flex justify-around">
-            <UButton
-              color="gray"
-              label="Kontynuuj zakupy"
-              icon="i-heroicons-banknotes"
-              @click="continueShopping"
-            />
-            <UButton
-              label="Przejdź do koszyka"
-              icon="i-heroicons-shopping-cart"
-            />
+            <UButton color="gray" label="Kontynuuj zakupy" icon="i-heroicons-banknotes" @click="continueShopping" />
+            <UButton label="Przejdź do koszyka" icon="i-heroicons-shopping-cart" @click="$router.push('/shoppingCart')" />
           </div>
         </Placeholder>
       </div>
@@ -242,31 +174,16 @@ function continueShopping (productId) {
     <div class="text-3xl font-bold py-10">
       Produkty
     </div>
-    <UCard :ui="{ body: { padding: '' }}">
-      <UTable
-        v-model:sort="sort"
-        :columns="columns"
-        :rows="products"
-      >
+    <UCard :ui="{ body: { padding: '' } }">
+      <UTable v-model:sort="sort" :columns="columns" :rows="products">
         <template #image-data="{ row }">
-          <UButton
-            label="Open"
-            variant="link"
-            @click="showPhoto(row.photo)"
-          >
-            <UAvatar
-              v-model:src="row.photo"
-              size="md"
-            />
+          <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
+            <UAvatar v-model:src="row.photo" size="md" />
           </UButton>
         </template>
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
-            <UButton
-              color="gray"
-              variant="ghost"
-              icon="i-heroicons-ellipsis-horizontal-20-solid"
-            />
+            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
           </UDropdown>
         </template>
       </UTable>
