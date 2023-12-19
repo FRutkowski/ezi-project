@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { _padding } from '#tailwind-config/theme';
-
 
 const isImageShown = ref(false)
-const imageToShow = ref('')
-
 const isDeletingProduct = ref(false)
-const deletedProductId = ref()
-
 const isChangingQuantity = ref(false)
-const quantity = ref(1)
+const isAddingProduct = ref(false)
+const isSuggestingProduct = ref(false)
 
-const columns = [{
+const imageToShow = ref('')
+const deletedProductId = ref()
+const quantity = ref(1)
+const addedProductId = ref()
+
+const cartColumns = [{
   key: 'image'
 }, {
   key: 'name',
@@ -29,25 +29,71 @@ const columns = [{
   key: 'actions'
 }]
 
+const columns = [{
+  key: 'image'
+}, {
+  key: 'name',
+  label: 'Nazwa'
+}, {
+  key: 'category',
+  label: 'Kategoria'
+}, {
+  key: 'price',
+  label: 'Cena'
+}, {
+  key: 'actions'
+}]
+
+const suggestedProduct = ref<Array<any>>([])
+const idx = ref()
+
 const { products } = await useProducts()
-const items = (row: any) => [
+const cartItems = (row: any) => [
   [{
     label: 'Usuń z koszyka',
     icon: 'i-heroicons-archive-box-x-mark',
     click: () => {
-      tryDeleteProduct(row.id)
+      isDeletingProduct.value = true
+      deletedProductId.value = row.id
     }
   }, {
     label: 'Zmień ilość',
     icon: 'i-heroicons-plus-circle',
     click: () => {
-      changeQuantity(row.id)
+      isChangingQuantity.value = true
     }
   }, {
     label: 'Sprawdź sugerowane',
     icon: 'i-heroicons-magnifying-glass-circle',
     click: () => {
+      isSuggestingProduct.value = true
 
+      idx.value = Math.floor(Math.random() * products.value.length)
+      suggestedProduct.value[0] = products.value[idx.value]
+    }
+  }]
+]
+
+const items = (row: any) => [
+  [{
+    label: 'Dodaj do koszyka',
+    icon: 'i-heroicons-shopping-cart',
+    click: () => {
+      isSuggestingProduct.value = false
+      isAddingProduct.value = true
+      addedProductId.value = row.id
+
+      idx.value = Math.floor(Math.random() * products.value.length)
+      suggestedProduct.value[0] = products.value[idx.value]
+    }
+  }, {
+    label: 'Sprawdź sugerowane',
+    icon: 'i-heroicons-magnifying-glass-circle',
+    click: () => {
+      isSuggestingProduct.value = true
+
+      idx.value = Math.floor(Math.random() * products.value.length)
+      suggestedProduct.value[0] = products.value[idx.value]
     }
   }]
 ]
@@ -57,17 +103,13 @@ function showPhoto(imgUrl: any) {
   imageToShow.value = imgUrl
 }
 
-function tryDeleteProduct(productId: any) {
-  isDeletingProduct.value = true
-  deletedProductId.value = productId
-}
-
 function deleteProduct() {
   isDeletingProduct.value = false
 }
 
-function changeQuantity(productId: any) {
-  isChangingQuantity.value = true
+function continueShopping(productId: any) {
+  isSuggestingProduct.value = false
+  isAddingProduct.value = false
 }
 
 </script>
@@ -119,17 +161,43 @@ function changeQuantity(productId: any) {
     </div>
   </UModal>
 
-  <UModal v-model="isImageShown" prevent-close>
-    <div class="flex justify-end w-full absolute p-2">
-      <UButton color="black" variant="solid" icon="i-heroicons-x-mark-20-solid" class="-my-1"
-        @click="isImageShown = false" />
-    </div>
-    <img :src="imageToShow">
-  </UModal>
+  <ProductImage v-model="isImageShown" :image-to-show="imageToShow" @close-image="isImageShown = false">
+  </ProductImage>
+
+  <AddingProduct v-model="isAddingProduct" @close-adding="isAddingProduct = false" @continue-shopping="continueShopping">
+    <UTable v-model:columns="columns" :rows="suggestedProduct">
+      <template #image-data="{ row }">
+        <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
+          <UAvatar v-model:src="row.photo" size="sm" />
+        </UButton>
+      </template>
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+        </UDropdown>
+      </template>
+    </UTable>
+  </AddingProduct>
+
+  <SuggestingProduct v-model="isSuggestingProduct" @close-suggesting="isSuggestingProduct = false"
+    @continue-shopping="continueShopping">
+    <UTable v-model:columns="columns" :rows="suggestedProduct">
+      <template #image-data="{ row }">
+        <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
+          <UAvatar v-model:src="row.photo" size="sm" />
+        </UButton>
+      </template>ł
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+        </UDropdown>
+      </template>
+    </UTable>
+  </SuggestingProduct>
 
   <div class="flex flex-row justify-between gap-4">
     <UCard :ui="{ body: { padding: '' } }" class="flex-1">
-      <UTable :columns="columns" :rows="products">
+      <UTable :columns="cartColumns" :rows="products">
         <template #image-data="{ row }">
           <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
             <UAvatar v-model:src="row.photo" size="md" />
@@ -139,7 +207,7 @@ function changeQuantity(productId: any) {
           1
         </template>
         <template #actions-data="{ row }">
-          <UDropdown :items="items(row)">
+          <UDropdown :items="cartItems(row)">
             <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
           </UDropdown>
         </template>
@@ -155,7 +223,7 @@ function changeQuantity(productId: any) {
           <UDivider color="gray" />
           <div class="flex flex-row justify-between gap-12 text-xs p-4">
             <div>Wartość zamówienia</div>
-            <div class="font-semibold">120zł</div>
+            <div class="font-semibold">39.99 zł</div>
           </div>
           <div class="flex flex-row justify-between gap-12 text-xs p-4">
             <div>Dostawa</div>
@@ -164,7 +232,7 @@ function changeQuantity(productId: any) {
           <UDivider color="gray" />
           <div class="flex flex-row justify-between gap-12 text-sm p-4 font-semibold">
             <div>Suma</div>
-            <div>120zł</div>
+            <div>39.99 zł</div>
           </div>
 
           <UButton class="m-2" :ui="{
@@ -177,6 +245,5 @@ function changeQuantity(productId: any) {
       </UCard>
       <div class="flex flex-auto"></div>
     </div>
-
   </div>
 </template>
