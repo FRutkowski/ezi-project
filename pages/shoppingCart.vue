@@ -225,10 +225,14 @@ function continueShopping(productId: any) {
             <div>Wartość zamówienia</div>
             <div class="font-semibold">39.99 zł</div>
           </div>
-          <div class="flex flex-row justify-between gap-12 text-xs p-4">
-            <div>Dostawa</div>
-            <div class="font-semibold">Bezpłatnie</div>
+          <div class="flex flex-col text-xs gap-4 p-4">
+            <div class="flex flex-row justify-between gap-12 text-xs">
+              <div>Dostawa</div>
+              <div class="font-semibold">Bezpłatnie</div>
+            </div>
+            <div>Darmowa dostawa dostępna od 29.99 zł</div>
           </div>
+
           <UDivider color="gray" />
           <div class="flex flex-row justify-between gap-12 text-sm p-4 font-semibold">
             <div>Suma</div>
