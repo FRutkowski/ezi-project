@@ -52,7 +52,7 @@ const items = (row: any) => [
   }]
 ]
 
-function showPhoto(imgUrl: any) {
+function showPhoto (imgUrl: any) {
   isImageShown.value = true
   imageToShow.value = imgUrl
 }
@@ -60,7 +60,7 @@ function showPhoto(imgUrl: any) {
 const suggestedProduct = ref<Array<any>>([])
 const idx = ref()
 
-function continueShopping(productId: any) {
+function continueShopping (productId: any) {
   isAddingProduct.value = false
   isSuggestingProduct.value = false
 }
@@ -69,36 +69,73 @@ function continueShopping(productId: any) {
 
 <template>
   <div class="pb-20">
-    <ProductImage v-model="isImageShown" :image-to-show="imageToShow" @close-image="isImageShown = false">
-    </ProductImage>
+    <ProductImage
+      v-model="isImageShown"
+      :image-to-show="imageToShow"
+      @close-image="isImageShown = false"
+    />
 
-    <AddingProduct v-model="isAddingProduct" @close-adding="isAddingProduct = false"
-      @continue-shopping="continueShopping">
-      <UTable v-model:columns="columns" :rows="suggestedProduct">
+    <AddingProduct
+      v-model="isAddingProduct"
+      @close-adding="isAddingProduct = false"
+      @continue-shopping="continueShopping"
+    >
+      <UTable
+        v-model:columns="columns"
+        :rows="suggestedProduct"
+      >
         <template #image-data="{ row }">
-          <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
-            <UAvatar v-model:src="row.photo" size="sm" />
+          <UButton
+            label="Open"
+            variant="link"
+            @click="showPhoto(row.photo)"
+          >
+            <UAvatar
+              v-model:src="row.photo"
+              size="sm"
+            />
           </UButton>
         </template>
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-ellipsis-horizontal-20-solid"
+            />
           </UDropdown>
         </template>
       </UTable>
     </AddingProduct>
 
-    <SuggestingProduct v-model="isSuggestingProduct" @close-suggesting="isSuggestingProduct = false"
-      @continue-shopping="continueShopping">
-      <UTable v-model:columns="columns" :rows="suggestedProduct">
+    <SuggestingProduct
+      v-model="isSuggestingProduct"
+      @close-suggesting="isSuggestingProduct = false"
+      @continue-shopping="continueShopping"
+    >
+      <UTable
+        v-model:columns="columns"
+        :rows="suggestedProduct"
+      >
         <template #image-data="{ row }">
-          <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
-            <UAvatar v-model:src="row.photo" size="sm" />
+          <UButton
+            label="Open"
+            variant="link"
+            @click="showPhoto(row.photo)"
+          >
+            <UAvatar
+              v-model:src="row.photo"
+              size="sm"
+            />
           </UButton>
         </template>ł
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-ellipsis-horizontal-20-solid"
+            />
           </UDropdown>
         </template>
       </UTable>
@@ -108,15 +145,29 @@ function continueShopping(productId: any) {
       Produkty
     </div>
     <UCard :ui="{ body: { padding: '' } }">
-      <UTable v-model:columns="columns" :rows="products">
+      <UTable
+        v-model:columns="columns"
+        :rows="products"
+      >
         <template #image-data="{ row }">
-          <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
-            <UAvatar v-model:src="row.photo" size="md" />
+          <UButton
+            label="Open"
+            variant="link"
+            @click="showPhoto(row.photo)"
+          >
+            <UAvatar
+              v-model:src="row.photo"
+              size="md"
+            />
           </UButton>
         </template>
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-ellipsis-horizontal-20-solid"
+            />
           </UDropdown>
         </template>
       </UTable>
