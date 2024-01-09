@@ -2,6 +2,9 @@ import { createGlobalState } from '@vueuse/core'
 
 export const useProducts = createGlobalState(async () => {
   // NOTE: We will get data from the database
+  const products2 = await useFetch('api/products')
+  console.log('---------------produkty')
+  console.log(products2)
   const products = ref<Product[]>([{
     id: '1',
     name: 'Kawa',
