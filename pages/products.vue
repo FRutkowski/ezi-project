@@ -52,7 +52,7 @@ const items = (row: any) => [
   }]
 ]
 
-function showPhoto(imgUrl: any) {
+function showPhoto (imgUrl: any) {
   isImageShown.value = true
   imageToShow.value = imgUrl
 }
@@ -60,61 +60,91 @@ function showPhoto(imgUrl: any) {
 const suggestedProduct = ref<Array<any>>([])
 const idx = ref()
 
-function continueShopping(productId: any) {
+function continueShopping (productId: any) {
   isAddingProduct.value = false
   isSuggestingProduct.value = false
 }
 
+const getImageSourceFromArrayOfBytes = (bytes: any) => {
+  const blob = new Blob([bytes], { type: 'image/jpeg' })
+  const object = URL.createObjectURL(blob)
+  console.log('------------- url zdjecia')
+  console.log(object)
+  return object
+}
 </script>
 
 <template>
   <div class="pb-20">
-    <ProductImage v-model="isImageShown" :image-to-show="imageToShow" @close-image="isImageShown = false" />
+    <ProductImage
+      v-model="isImageShown"
+      :image-to-show="imageToShow"
+      @close-image="isImageShown = false"
+    />
 
-    <UModal prevent-close v-model="isAddingProduct">
-    <div class="p-4">
-      <Placeholder class="h-48">
-        <div class="flex justify-between w-full py-4">
-          <div class="flex w-full">
-            Produkt został dodany do koszyka!
+    <UModal
+      v-model="isAddingProduct"
+      prevent-close
+    >
+      <div class="p-4">
+        <Placeholder class="h-48">
+          <div class="flex justify-between w-full py-4">
+            <div class="flex w-full">
+              Produkt został dodany do koszyka!
+            </div>
+            <UButton
+              color="black"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              is-adding-product="false"
+            />
           </div>
-          <UButton
-            color="black"
-            variant="ghost"
-            icon="i-heroicons-x-mark-20-solid"
-            class="-my-1"
-            isAddingProduct = false
-          />
-        </div>
-        <div class="pt-4 w-full flex justify-around">
-          <UButton
-            color="gray"
-            label="Kontynuuj zakupy"
-            icon="i-heroicons-banknotes"
-            @click=continueShopping
-          />
-          <UButton
-            label="Przejdź do koszyka"
-            icon="i-heroicons-shopping-cart"
-            @click="$router.push('/shoppingCart')"
-          />
-        </div>
-      </Placeholder>
-    </div>
-  </UModal>
+          <div class="pt-4 w-full flex justify-around">
+            <UButton
+              color="gray"
+              label="Kontynuuj zakupy"
+              icon="i-heroicons-banknotes"
+              @click="continueShopping"
+            />
+            <UButton
+              label="Przejdź do koszyka"
+              icon="i-heroicons-shopping-cart"
+              @click="$router.push('/shoppingCart')"
+            />
+          </div>
+        </Placeholder>
+      </div>
+    </UModal>
 
-
-    <SuggestingProduct v-model="isSuggestingProduct" @close-suggesting="isSuggestingProduct = false"
-      @continue-shopping="continueShopping">
-      <UTable v-model:columns="columns" :rows="suggestedProduct">
+    <SuggestingProduct
+      v-model="isSuggestingProduct"
+      @close-suggesting="isSuggestingProduct = false"
+      @continue-shopping="continueShopping"
+    >
+      <UTable
+        v-model:columns="columns"
+        :rows="suggestedProduct"
+      >
         <template #image-data="{ row }">
-          <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
-            <UAvatar v-model:src="row.photo" size="sm" />
+          <UButton
+            label="Open"
+            variant="link"
+            @click="showPhoto(row.photo)"
+          >
+            <UAvatar
+              v-model:src="row.photo"
+              size="sm"
+            />
           </UButton>
         </template>ł
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-ellipsis-horizontal-20-solid"
+            />
           </UDropdown>
         </template>
       </UTable>
@@ -124,15 +154,33 @@ function continueShopping(productId: any) {
       Produkty
     </div>
     <UCard :ui="{ body: { padding: '' } }">
-      <UTable v-model:columns="columns" :rows="products">
+      <UTable
+        v-model:columns="columns"
+        :rows="products"
+      >
         <template #image-data="{ row }">
-          <UButton label="Open" variant="link" @click="showPhoto(row.photo)">
-            <UAvatar v-model:src="row.photo" size="md" />
+          <UButton
+            label="Open"
+            variant="link"
+            @click="showPhoto(row.photo)"
+          >
+            <UAvatar
+              :src="getImageSourceFromArrayOfBytes(row.photo)"
+              size="md"
+              crossorigin
+            />
           </UButton>
+        </template>
+        <template #category-data="{ row }">
+          <div>{{ row.category.name }}</div>
         </template>
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-ellipsis-horizontal-20-solid"
+            />
           </UDropdown>
         </template>
       </UTable>
