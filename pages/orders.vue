@@ -22,15 +22,15 @@ const orders = [{
   products: [
     {
       url: 'https://images.unsplash.com/photo-1696435552166-b6df73486451?q=80&w=2841&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      name: "Kawa"
+      name: 'Kawa'
     },
     {
       url: 'https://media.istockphoto.com/id/1180002154/pl/zdj%C4%99cie/grillowane-%C5%BCeberka-wieprzowe-na-desce-do-krojenia.jpg?s=1024x1024&w=is&k=20&c=YN5pcSfIC1DrV3iahInEOEbNjEMf4PzkWfmCt-1isaY=',
-      name: "Żeberka"
+      name: 'Żeberka'
     },
     {
       url: 'https://media.istockphoto.com/id/1319938305/pl/zdj%C4%99cie/pyszna-tarta-wo%C5%82owa-z-jajkiem-przepi%C3%B3rczym-i-przyprawami.jpg?s=1024x1024&w=is&k=20&c=0ET_4wQ3dNm2IgB21_e2ltXQ0wE3Svb6_x-TfMjCdDg=',
-      name: "Tatar"
+      name: 'Tatar'
     }
   ]
 }, {
@@ -41,36 +41,36 @@ const orders = [{
   products: [
     {
       url: 'https://images.unsplash.com/photo-1696435552166-b6df73486451?q=80&w=2841&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      name: "Kawa"
+      name: 'Kawa'
     },
     {
       url: 'https://media.istockphoto.com/id/1180002154/pl/zdj%C4%99cie/grillowane-%C5%BCeberka-wieprzowe-na-desce-do-krojenia.jpg?s=1024x1024&w=is&k=20&c=YN5pcSfIC1DrV3iahInEOEbNjEMf4PzkWfmCt-1isaY=',
-      name: "Żeberka"
+      name: 'Żeberka'
     },
     {
       url: 'https://media.istockphoto.com/id/1319938305/pl/zdj%C4%99cie/pyszna-tarta-wo%C5%82owa-z-jajkiem-przepi%C3%B3rczym-i-przyprawami.jpg?s=1024x1024&w=is&k=20&c=0ET_4wQ3dNm2IgB21_e2ltXQ0wE3Svb6_x-TfMjCdDg=',
-      name: "Tatar"
+      name: 'Tatar'
     },
     {
       url: 'https://media.istockphoto.com/id/1144433097/pl/zdj%C4%99cie/zupa-pomidorowa.jpg?s=1024x1024&w=is&k=20&c=TaeDg_XRgT8NtLevdEpAjtsK6fwxaHzrxttu8YCwbDU=',
-      name: "Zupa pomidorowa"
+      name: 'Zupa pomidorowa'
     },
     {
       url: 'https://images.unsplash.com/photo-1696435552166-b6df73486451?q=80&w=2841&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      name: "Kawa"
+      name: 'Kawa'
     },
     {
       url: 'https://media.istockphoto.com/id/1180002154/pl/zdj%C4%99cie/grillowane-%C5%BCeberka-wieprzowe-na-desce-do-krojenia.jpg?s=1024x1024&w=is&k=20&c=YN5pcSfIC1DrV3iahInEOEbNjEMf4PzkWfmCt-1isaY=',
-      name: "Żeberka"
+      name: 'Żeberka'
     },
     {
       url: 'https://media.istockphoto.com/id/1319938305/pl/zdj%C4%99cie/pyszna-tarta-wo%C5%82owa-z-jajkiem-przepi%C3%B3rczym-i-przyprawami.jpg?s=1024x1024&w=is&k=20&c=0ET_4wQ3dNm2IgB21_e2ltXQ0wE3Svb6_x-TfMjCdDg=',
-      name: "Tatar"
-    },
+      name: 'Tatar'
+    }
   ]
 }]
 
-function select(row: any) {
+function select (row: any) {
   const id = row.id
   return router.push(`/order/${id}`)
 }
@@ -82,16 +82,27 @@ function select(row: any) {
     Moje zamówienia
   </div>
   <UCard :ui="{ body: { padding: '' } }">
-    <UTable v-model:columns="columns" :rows="orders" @select="select">
-    <template #image-data="{ row }">
-      <UAvatarGroup class="" v-for="img in row.products">
-        <UTooltip :text=img.name>
-          <UAvatar class="flex" v-model:src="img.url" />
-        </UTooltip>
-      </UAvatarGroup>
-    </template>
-    <template #amount-data="{ row }">
-      {{ row.amount }} zł
-    </template>
-  </UTable>
-</UCard></template>
+    <UTable
+      v-model:columns="columns"
+      :rows="orders"
+      @select="select"
+    >
+      <template #image-data="{ row }">
+        <UAvatarGroup
+          v-for="img in row.products"
+          class=""
+        >
+          <UTooltip :text="img.name">
+            <UAvatar
+              v-model:src="img.url"
+              class="flex"
+            />
+          </UTooltip>
+        </UAvatarGroup>
+      </template>
+      <template #amount-data="{ row }">
+        {{ row.amount }} zł
+      </template>
+    </UTable>
+  </UCard>
+</template>
