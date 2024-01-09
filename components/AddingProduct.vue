@@ -23,12 +23,6 @@ const emit = defineEmits<{
             @click="$emit('close-adding')"
           />
         </div>
-        <p class="py-4 text-sm">
-          Inne produkty sugerowane na podstawie Twojego wyboru:
-        </p>
-        <UDivider />
-        <slot />
-        <UDivider />
         <div class="pt-4 w-full flex justify-around">
           <UButton
             color="gray"
