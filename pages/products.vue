@@ -71,9 +71,38 @@ function continueShopping(productId: any) {
   <div class="pb-20">
     <ProductImage v-model="isImageShown" :image-to-show="imageToShow" @close-image="isImageShown = false" />
 
-    <AddingProduct v-model="isAddingProduct" @close-adding="isAddingProduct = false"
-      @continue-shopping="continueShopping">
-    </AddingProduct>
+    <UModal prevent-close v-model="isAddingProduct">
+    <div class="p-4">
+      <Placeholder class="h-48">
+        <div class="flex justify-between w-full py-4">
+          <div class="flex w-full">
+            Produkt został dodany do koszyka!
+          </div>
+          <UButton
+            color="black"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="-my-1"
+            isAddingProduct = false
+          />
+        </div>
+        <div class="pt-4 w-full flex justify-around">
+          <UButton
+            color="gray"
+            label="Kontynuuj zakupy"
+            icon="i-heroicons-banknotes"
+            @click=continueShopping
+          />
+          <UButton
+            label="Przejdź do koszyka"
+            icon="i-heroicons-shopping-cart"
+            @click="$router.push('/shoppingCart')"
+          />
+        </div>
+      </Placeholder>
+    </div>
+  </UModal>
+
 
     <SuggestingProduct v-model="isSuggestingProduct" @close-suggesting="isSuggestingProduct = false"
       @continue-shopping="continueShopping">

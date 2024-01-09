@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 const emit = defineEmits<{
- (e: 'close-adding'): void,
- (e: 'continue-shopping'): void
+  (e: 'close-adding'): void,
+  (e: 'continue-shopping'): void
 }>()
 
 </script>
@@ -15,26 +15,11 @@ const emit = defineEmits<{
           <div class="flex w-full">
             Produkt został dodany do koszyka!
           </div>
-          <UButton
-            color="black"
-            variant="ghost"
-            icon="i-heroicons-x-mark-20-solid"
-            class="-my-1"
-            @click="$emit('close-adding')"
-          />
+          <UButton color="black" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+            @click="$emit('close-adding')" />
         </div>
         <div class="pt-4 w-full flex justify-around">
-          <UButton
-            color="gray"
-            label="Kontynuuj zakupy"
-            icon="i-heroicons-banknotes"
-            @click="$emit('continue-shopping')"
-          />
-          <UButton
-            label="Przejdź do koszyka"
-            icon="i-heroicons-shopping-cart"
-            @click="$router.push('/shoppingCart')"
-          />
+          <UButton label="Wróć do koszyka" icon="i-heroicons-shopping-cart" @click="$emit('continue-shopping')" />
         </div>
       </Placeholder>
     </div>
