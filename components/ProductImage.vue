@@ -16,9 +16,15 @@ const emit = defineEmits<{
 <template>
   <UModal prevent-close>
     <div class="flex justify-end w-full absolute p-2">
-      <UButton color="black" variant="solid" icon="i-heroicons-x-mark-20-solid" class="-my-1"
-        @click="$emit('close-image')" />
+      <UButton
+        color="black"
+        variant="solid"
+        icon="i-heroicons-x-mark-20-solid"
+        class="-my-1"
+        @click="$emit('close-image')"
+      />
     </div>
     <img :src="imageToShow">
   </UModal>
 </template>
+
