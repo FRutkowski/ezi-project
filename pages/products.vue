@@ -7,54 +7,93 @@ const isSuggestingProduct = ref(false)
 const imageToShow = ref('')
 const addedProductId = ref()
 
-const columns = [{
-  key: 'image'
-}, {
-  key: 'name',
-  label: 'Nazwa',
-  sortable: true
-}, {
-  key: 'category',
-  label: 'Kategoria',
-  sortable: true
-}, {
-  key: 'price',
-  label: 'Cena',
-  sortable: true
-}, {
-  key: 'actions'
-}]
+const columns = [
+// {
+//   key: 'image'
+// },
+  {
+    key: 'name',
+    label: 'Nazwa',
+    sortable: true
+  }, {
+    key: 'category',
+    label: 'Kategoria',
+    sortable: true
+  }, {
+    key: 'price',
+    label: 'Cena',
+    sortable: true
+  }, {
+    key: 'actions'
+  }]
 
 const { products } = await useProducts()
+const cart = useCart()
 
 const items = (row: any) => [
   [{
     label: 'Dodaj do koszyka',
     icon: 'i-heroicons-shopping-cart',
-    click: () => {
+    click: async () => {
+      const filteredCart = cart.value.filter((product: Product) => product.id === row.id)
+      if (filteredCart.length > 0) {
+        return
+      }
+
+      cart.value.push(row)
       isSuggestingProduct.value = false
       isAddingProduct.value = true
       addedProductId.value = row.id
-
       idx.value = Math.floor(Math.random() * products.value.length)
       suggestedProduct.value[0] = products.value[idx.value]
+      const result = await useFetch('/api/client-actions', {
+        baseURL: 'http://localhost:8080',
+        method: 'POST',
+        body: {
+          clientId: 1,
+          objectId: row.id,
+          type: 'ADD_TO_CART'
+        }
+      })
+
+      console.log(result)
     }
   }, {
     label: 'Sprawdź sugerowane',
     icon: 'i-heroicons-magnifying-glass-circle',
-    click: () => {
+    click: async () => {
       isSuggestingProduct.value = true
       isAddingProduct.value = false
 
       idx.value = Math.floor(Math.random() * products.value.length)
       suggestedProduct.value[0] = products.value[idx.value]
+      const result = await useFetch('/api/client-actions', {
+        baseURL: 'http://localhost:8080',
+        method: 'POST',
+        body: {
+          clientId: 1,
+          objectId: row.id,
+          type: 'VIEW_PRODUCT'
+        }
+      })
+
+      console.log(result)
     }
   }]
 ]
 
-function showPhoto (imgUrl: any) {
+async function showPhoto (row: Product) {
   isImageShown.value = true
-  imageToShow.value = imgUrl
+  imageToShow.value = row.photo
+  await useFetch('/api/client-actions', {
+    baseURL: 'http://localhost:8080',
+    method: 'POST',
+    body: {
+      clientId: 1,
+      objectId: row.id,
+      type: 'VIEW_PRODUCT'
+    }
+  })
 }
 
 const suggestedProduct = ref<Array<any>>([])
@@ -72,6 +111,27 @@ const getImageSourceFromArrayOfBytes = (bytes: any) => {
   console.log(object)
   return object
 }
+
+const page = ref(1)
+const pageCount = 8
+
+const searchInput = ref('')
+const filteredRows = computed(() => {
+  if (!searchInput.value) {
+    return products.value
+  }
+
+  return products.value.filter((product: Product) => {
+    return Object.values(product).some((value) => {
+      return String(value).toLowerCase().includes(searchInput.value.toLowerCase())
+    })
+  })
+})
+
+const rows = computed(() => {
+  return filteredRows.value.slice((page.value - 1) * pageCount, (page.value) * pageCount)
+})
+
 </script>
 
 <template>
@@ -126,18 +186,18 @@ const getImageSourceFromArrayOfBytes = (bytes: any) => {
         v-model:columns="columns"
         :rows="suggestedProduct"
       >
-        <template #image-data="{ row }">
+        <!-- <template #image-data="{ row }">
           <UButton
             label="Open"
             variant="link"
-            @click="showPhoto(row.photo)"
+            @click="showPhoto(row)"
           >
             <UAvatar
               v-model:src="row.photo"
               size="sm"
             />
           </UButton>
-        </template>ł
+        </template> -->
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
             <UButton
@@ -156,9 +216,9 @@ const getImageSourceFromArrayOfBytes = (bytes: any) => {
     <UCard :ui="{ body: { padding: '' } }">
       <UTable
         v-model:columns="columns"
-        :rows="products"
+        :rows="rows"
       >
-        <template #image-data="{ row }">
+        <!-- <template #image-data="{ row }">
           <UButton
             label="Open"
             variant="link"
@@ -170,7 +230,7 @@ const getImageSourceFromArrayOfBytes = (bytes: any) => {
               crossorigin
             />
           </UButton>
-        </template>
+        </template> -->
         <template #category-data="{ row }">
           <div>{{ row.category.name }}</div>
         </template>
@@ -184,6 +244,23 @@ const getImageSourceFromArrayOfBytes = (bytes: any) => {
           </UDropdown>
         </template>
       </UTable>
+      <div class="flex items-center px-4 py-8">
+        <div class="text-sm mr-auto">
+          <p v-if="rows.length === pageCount">
+            {{ 'Wyświetlanie ' + ((page * pageCount) - pageCount + 1) + ' do ' + (page * pageCount) + ' z ' + filteredRows.length + 'wyników' }}
+          </p>
+          <p v-else>
+            {{ 'Wyświetlanie ' + ((page * pageCount) - pageCount + 1) + ' do ' + filteredRows.length + ' z ' + filteredRows.length + 'wyników' }}
+          </p>
+        </div>
+        <UPagination
+          v-model="page"
+          :prev-button="{ icon: 'i-heroicons-arrow-small-left-20-solid', label: 'Poprzedni', color: 'gray' }"
+          :next-button="{ icon: 'i-heroicons-arrow-small-right-20-solid', trailing: true, label: 'Następny', color: 'gray' }"
+          :page-count="pageCount"
+          :total="filteredRows.length"
+        />
+      </div>
     </UCard>
   </div>
 </template>
