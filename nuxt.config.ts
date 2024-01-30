@@ -6,9 +6,10 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt', '@vee-validate/nuxt', 'magic-regexp/nuxt', 'nuxt-security'],
   security: {
+    csrf: true,
     headers: {
       contentSecurityPolicy: {
-        'img-src': ['https://images.unsplash.com', 'http://localhost:3000', 'blob:http://localhost:3000']
+        // 'img-src': ['https://images.unsplash.com', 'http://localhost:3000', 'blob:http://localhost:3000', 'https://heroicons.com/']
       }
     }
   },
