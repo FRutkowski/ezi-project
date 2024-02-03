@@ -8,9 +8,9 @@ const imageToShow = ref('')
 const addedProductId = ref()
 
 const columns = [
-// {
-//   key: 'image'
-// },
+  // {
+  //   key: 'image'
+  // },
   {
     key: 'name',
     label: 'Nazwa',
@@ -29,6 +29,7 @@ const columns = [
 
 const { products } = await useProducts()
 const cart = useCart()
+const suggestedProductsFromBackend = ref()
 
 const items = (row: any) => [
   [{
@@ -78,6 +79,20 @@ const items = (row: any) => [
       })
 
       console.log(result)
+      const { data: fetchProducts } = await useFetch('/api/products/category-suggestion-or', {
+        baseURL: 'http://localhost:8080',
+        method: 'POST',
+        params: {
+          clientId: 1
+        },
+        body: {
+          productIds: [row.id]
+        }
+      })
+
+      console.log('Odebrane produkty')
+      console.log(fetchProducts)
+      suggestedProductsFromBackend.value = fetchProducts.value.slice(0, 7)
     }
   }]
 ]
@@ -85,6 +100,7 @@ const items = (row: any) => [
 async function showPhoto (row: Product) {
   isImageShown.value = true
   imageToShow.value = row.photo
+
   await useFetch('/api/client-actions', {
     baseURL: 'http://localhost:8080',
     method: 'POST',
@@ -184,7 +200,7 @@ const rows = computed(() => {
     >
       <UTable
         v-model:columns="columns"
-        :rows="suggestedProduct"
+        :rows="suggestedProductsFromBackend"
       >
         <!-- <template #image-data="{ row }">
           <UButton
@@ -198,6 +214,12 @@ const rows = computed(() => {
             />
           </UButton>
         </template> -->
+        <template #category-data="{ row }">
+          <div>
+            {{ row.category.name }}
+          </div>
+        </template>
+
         <template #actions-data="{ row }">
           <UDropdown :items="items(row)">
             <UButton
@@ -223,8 +245,9 @@ const rows = computed(() => {
             label="Open"
             variant="link"
             @click="showPhoto(row.photo)"
-          >
-            <UAvatar
+          > -->
+        <!-- src="https://images.unsplash.com/photo-1600289031464-74d374b64991?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1lYWx8ZW58MHx8MHx8fDA%3D" -->
+        <!-- <UAvatar
               :src="getImageSourceFromArrayOfBytes(row.photo)"
               size="md"
               crossorigin
@@ -238,8 +261,8 @@ const rows = computed(() => {
           <UDropdown :items="items(row)">
             <UButton
               color="gray"
-              variant="ghost"
               icon="i-heroicons-ellipsis-horizontal-20-solid"
+              variant="ghost"
             />
           </UDropdown>
         </template>
