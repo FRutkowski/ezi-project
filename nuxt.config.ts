@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     csrf: true,
     headers: {
       contentSecurityPolicy: {
-        // 'img-src': ['https://images.unsplash.com', 'http://localhost:3000', 'blob:http://localhost:3000', 'https://heroicons.com/']
+        // 'img-src': ['https://images.unsplash.com', 'http://localhost:3000', 'blob:http://localhost:3000']
       }
     }
   },

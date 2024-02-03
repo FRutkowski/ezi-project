@@ -499,7 +499,7 @@ watch(suggestedProducts, () => {
               Podsumowanie
             </div>
             <UDivider color="gray" />
-            <div class="flex flex-row justify-between gap-12 text-xs p-4">
+            <!-- <div class="flex flex-row justify-between gap-12 text-xs p-4">
               <div>Wartość zamówienia</div>
               <div class="font-semibold">
                 {{ finalPrice.toFixed(2) }}zł
@@ -512,11 +512,11 @@ watch(suggestedProducts, () => {
                   Bezpłatnie
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <UDivider color="gray" />
             <div class="flex flex-row justify-between gap-12 text-sm p-4 font-semibold">
-              <div>Suma</div>
+              <div>Wartość zamówienia</div>
               <div class="font-semibold">
                 {{ finalPrice.toFixed(2) }}zł
               </div>

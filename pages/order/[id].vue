@@ -5,21 +5,23 @@ const props = defineProps<{ id: string }>()
 const isImageShown = ref(false)
 const imageToShow = ref('')
 
-const cartColumns = [{
-  key: 'image'
-}, {
-  key: 'name',
-  label: 'Nazwa'
-}, {
-  key: 'category',
-  label: 'Kategoria'
-}, {
-  key: 'price',
-  label: 'Cena'
-}, {
-  key: 'quantity',
-  label: 'Ilość'
-}]
+const cartColumns = [
+//   {
+//   key: 'image'
+// },
+  {
+    key: 'name',
+    label: 'Nazwa'
+  }, {
+    key: 'category',
+    label: 'Kategoria'
+  }, {
+    key: 'price',
+    label: 'Cena'
+  }, {
+    key: 'quantity',
+    label: 'Ilość'
+  }]
 
 const columns = [{
   key: 'image'
@@ -36,12 +38,21 @@ const columns = [{
   key: 'actions'
 }]
 
-const { products } = await useProducts()
+const route = useRoute()
+// const { products } = await useProducts()
+const { orders } = await useOrders()
+const products = computed(() => {
+  return orders.value[route.params.id - 1].products
+})
 
 function showPhoto (imgUrl: any) {
   isImageShown.value = true
   imageToShow.value = imgUrl
 }
+
+const finalPrice = computed(() => {
+  return products.value.reduce((acc: number, product: Product) => acc + product.price, 0)
+})
 
 </script>
 
@@ -66,7 +77,7 @@ function showPhoto (imgUrl: any) {
           :columns="cartColumns"
           :rows="products"
         >
-          <template #image-data="{ row }">
+          <!-- <template #image-data="{ row }">
             <UButton
               label="Open"
               variant="link"
@@ -77,7 +88,11 @@ function showPhoto (imgUrl: any) {
                 size="md"
               />
             </UButton>
+          </template> -->
+          <template #category-data="{ row }">
+            <div>{{ row.category.name }}</div>
           </template>
+
           <template #quantity-data="{ row }">
             1
           </template>
@@ -93,7 +108,7 @@ function showPhoto (imgUrl: any) {
             <div class="flex flex-row justify-between gap-12 text-xs font-semibold p-4">
               Podsumowanie
             </div>
-            <UDivider color="gray" />
+            <!-- <UDivider color="gray" />
             <div class="flex flex-row justify-between gap-12 text-xs p-4">
               <div>Wartość zamówienia</div>
               <div class="font-semibold">
@@ -107,12 +122,13 @@ function showPhoto (imgUrl: any) {
                   Bezpłatnie
                 </div>
               </div>
-            </div>
-
+            </div> -->
             <UDivider color="gray" />
             <div class="flex flex-row justify-between gap-12 text-sm p-4 font-semibold">
-              <div>Suma</div>
-              <div>39.99 zł</div>
+              <div>Wartość zamówienia</div>
+              <div class="font-semibold">
+                {{ finalPrice.toFixed(2) }}zł
+              </div>
             </div>
           </div>
         </UCard>
@@ -121,4 +137,3 @@ function showPhoto (imgUrl: any) {
     </div>
   </div>
 </template>
-
